@@ -1,0 +1,142 @@
+*
+{ 
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+}
+
+h2 { 
+	color: #111; 
+	font-family: 'Open Sans Condensed', sans-serif; 
+	font-size: 30px; 
+	font-weight: 700; 
+	line-height: 38px; 
+	margin: 0 0 14px; 
+	padding: 0 30px; 
+	text-align: center; 
+	text-transform: uppercase; 
+}
+
+header.banner{
+	background: url("../images/banner.jpg") no-repeat;
+	width: 100%;
+	height: 150px;
+	background-size: cover;
+	position: relative;
+}
+
+header.banner > div.logo{
+	position: absolute;
+	left: 10%;
+	bottom: -10%;
+	height: 150px;
+	width: 150px;
+	border-radius: 50%;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 4px 10px -2px #986C3E;
+}
+
+header.banner > div.logo > span{
+	font-size: 34px;
+	font-weight: bold;
+	text-align: center;
+}
+
+main.beerContainer{
+	width: 100%;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+section.resultsContainer
+{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	border: 1px solid #EAEAEA;
+	box-shadow: 0px 0px 6px 1px #CCC;
+	width: 840px;
+	height: 100%;
+	border-radius: 4px;
+	background-color: #F5F5F5;
+	padding-top: 15px;
+	overflow-y:scroll;
+}
+
+div.beerCard{
+	width: 165px;
+	height: 190px;
+	border: 1px solid #C0C0C0;
+	border-radius: 5px;
+	box-shadow: 0px 0px 6px 1px #CCC;
+	background-color: white;
+	position: relative;
+	margin: 36px 12px;
+	cursor: pointer;
+	transition: box-shadow 1s;
+}
+
+div.beerCard:hover{
+  	box-shadow: 0px 0px 6px 1px #B9090B;
+}
+
+div.missingImage{
+
+}
+
+div.beerCard > div.image{
+	position: absolute;
+	top: -20%;
+	left: 30px;
+	border-radius: 50%;
+	width: 80px;
+	height: 80px;
+	border: 1px solid #C0C0C0;
+	box-shadow: 0 4px 10px -2px #C0C0C0;
+	background-color: white;
+	margin: auto;
+}
+
+div.beerCard > div.desc{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	position: absolute;
+	top: 30%;
+	width: 100%;
+	margin: auto;
+	text-align: center;
+	color: #111; 
+	font-family: 'Open Sans Condensed', sans-serif; 
+	font-size: 10px; 
+	font-weight: bold;   
+}
+
+div.desc > div.beerName{
+	font-weight: bold;
+	font-size: 15px;
+	color: #111; 
+	height: 40px;
+	font-family: 'Open Sans Condensed', sans-serif; 
+}
+div.desc > div.beerStyle{
+	font-weight: bold;
+	font-size: 12px;
+	margin-top: 15px;
+	color: #111; 
+	height: 20px;
+	font-family: 'Open Sans Condensed', sans-serif; 
+}
+div.desc > div.stats{
+	font-style: italic;
+	font-size: 12px;
+	color: grey;
+	margin-top: 2px; 
+	height: 10px;
+	font-family: 'Open Sans Condensed', sans-serif; 
+}

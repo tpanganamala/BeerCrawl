@@ -1,0 +1,108 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Beer Crawl</title>
+  <meta name="author" content="Tirumal Panganamala">
+
+  <!-- JavaScript --> 
+  <script type="text/javascript" src="js/beerCrawl.js"></script>
+  <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="styles/beerCrawl.css">
+  <link rel="stylesheet" type="text/css" href="styles/font-awesome.css">
+
+</head>
+<body onload="APP.init()">
+
+  <header class="banner">
+    <div class="logo"><span id="logoLabel"><h2>Beer Crawl</h2><span></div>
+  </header>
+
+  <div class="topControls">
+    <div id="counts"></div>
+    <div id="sorting"><label for="sortBy">Sort By: </label><select id="sortBy"></select></div>
+  </div>
+
+  <!-- Main container to hold search box, results -->
+  <main class="beerContainer">
+
+    <!-- Search panel -->
+    <section class="searchPanel">
+
+      <!-- Seach by Beer Name -->
+      <div class="searchItem">
+        <label for="searchTerm">Search by Beer </label>
+        <input type="text" id="searchTerm"/ maxlength="30" pattern="[0-9A-Za-z]+">
+        <i class="fa fa-search fa-lg" aria-hidden="true" id="searchTermBtn"></i>
+      </div>
+
+      <hr class="divLine"></hr>
+
+      <!-- Seach by Beer Style -->
+      <div class="searchItem">
+        <label for="styles">Search by Style </label>
+        <select id="styles"></select>
+        <div class="iconContainer"><i class="fa fa-search fa-lg" aria-hidden="true"  title="Search By Beer Name" id="searchStyleBtn"></i></div>
+      </div>
+
+      <hr class="divLine"></hr>
+
+      <!-- Seach by Glass Type -->
+      <div class="searchItem">
+        <label for="glasses">Search by Glass Type </label>
+        <select id="glasses"></select>
+        <div class="iconContainer"><i class="fa fa-search fa-lg" aria-hidden="true"  title="Search By Beer Style" id="searchGlassBtn"></i></div>
+      </div>
+
+      <hr class="divLine"></hr>
+
+      <!-- Seach by ABV range -->
+      <div class="searchItem">
+        <label for="glasses">Search using ABV </label><br>
+        <label for="abvStart" class="subtext">Range: </label>
+        <input type="text" id="abvStart"/ maxlength="4" pattern="[.0-9]+">
+        <label for="abvEnd" class="subtext"> to </label>
+        <input type="text" id="abvEnd"/ maxlength="4" pattern="[.0-9]+">
+        <div class="iconContainer"><i class="fa fa-search fa-lg" aria-hidden="true" title="Search by Alcohol By Value Range" id="searchAbvBtn"></i></div>
+      </div>
+
+      <hr class="divLine"></hr>
+
+      <!-- Seach by IBU range -->
+      <div class="searchItem">
+        <label for="glasses">Search using IBU </label><br>
+        <label for="ibuStart" class="subtext">Range: </label>
+        <input type="text" id="ibuStart"/ maxlength="3" pattern="[.0-9]+">
+        <label for="ibuEnd" class="subtext"> to </label>
+        <input type="text" id="ibuEnd"/ maxlength="3" pattern="[.0-9]+">
+        <div class="iconContainer"><i class="fa fa-search fa-lg" aria-hidden="true"  title="Search By International Bitterness Unit Range" id="searchIbuBtn"></i></div>
+      </div>
+
+      <div class="btnContainer"><button class="btn" id="clearFilters">Clear All Filters</button></div>
+
+    </section>
+
+    <!-- Beer Results container -->
+    <section class="resultsContainer" id="resultsContainer"></section>
+
+    <!-- Create a template to be reused for each beer result. We can retrieve this template
+        and dynamically create a new beer card to drop into our results container -->
+    <template id="beerInfoCard">
+      <div class="beerCard">
+        <div class="image"></div> 
+        <div class="desc">
+          <div class="beerName" id="beerName"></div>
+          <div class="beerStyle" id="beerStyle"></div>
+          <div class="stats" id="stats"></div>
+        </div>
+      </div>
+    </template>
+  
+  </main>
+
+</body>
+</html>
