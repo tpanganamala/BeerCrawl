@@ -5,18 +5,15 @@ APP.beersUrl 		= "http://api.brewerydb.com/v2/beers/?"; //all beers
 APP.stylesUrl 		= "http://api.brewerydb.com/v2/styles/?"; //all styles
 APP.glassesUrl 		= "http://api.brewerydb.com/v2/glassware/?"; //all glass types
 APP.searchUrl		= "http://api.brewerydb.com/v2/search/?"; //search by beer
-APP.key 			= "&key=a17db91bc77bfdd0d14b4053c5cc0a51"; //given key
+APP.key 			= "&key=773eaa516197f58fc6fbf5448fa99554"; //given key
 
 //Mapping of sorting options to sort funcs
-//This is needed because when the user changes the sortBy dropdown value, 
-//I retrieve the mapping # and select the sorting function. I tried to 
-//place the function as the .val of the dropdown so I can dynamically
-//retrieve it when the .change() event triggers on the dropdown, 
-//but couldnt get it to work. So I hacked it this way to get it working
-APP.sortingOptions  = [{name: "Beer Name (Asc)",funcMap: 0},
-					  	{name: "Beer Name (Desc)",funcMap: 1},
-					  	{name: "Alcohol by Vol (ABV)", funcMap: 2},
-					  	{name: "Intl Bitterness Unit (IBU)", funcMap: 3}];
+APP.sortingOptions  = [{name: "Beer Name (Asc)",funcIndex: 0},
+					  	{name: "Beer Name (Desc)",funcIndex: 1},
+					  	{name: "Alcohol by Vol (ABV)", funcIndex: 2},
+					  	{name: "Intl Bitterness Unit (IBU)", funcIndex: 3}];
+
+APP.funcMap = [APP.sortByNameAsc,APP.sortByNameDesc,APP.sortByAbv,APP.sortByIbu];
 
 /***************************************************************
 * Function: init
@@ -24,7 +21,7 @@ APP.sortingOptions  = [{name: "Beer Name (Asc)",funcMap: 0},
 		populate search criteria
 ****************************************************************/
 APP.init = function()
-{	
+{
 	//Hold UI input while we're loading the page
 	$.blockUI();
 
@@ -52,7 +49,7 @@ APP.init = function()
 
 /***************************************************************
 * Function: setupEventHandlers
-* Desc: Sets up various event handlers on the page, mainly for 
+* Desc: Sets up various event handlers on the page, mainly for
 		the search buttons
 ****************************************************************/
 APP.setupEventHandlers = function(){
@@ -64,13 +61,13 @@ APP.setupEventHandlers = function(){
 	$("#searchStyleBtn").click(APP.searchByStyle);
 
 	//Handler for search by glass btn
-	$("#searchGlassBtn").click(APP.searchByGlass);	
+	$("#searchGlassBtn").click(APP.searchByGlass);
 
 	//Handler for ABV
-	$("#searchAbvBtn").click(APP.searchByAbvRange);	
+	$("#searchAbvBtn").click(APP.searchByAbvRange);
 
 	//Handler for IBU
-	$("#searchIbuBtn").click(APP.searchByIbuRange);		
+	$("#searchIbuBtn").click(APP.searchByIbuRange);
 
 	//Clear filters
 	$("#clearFilters").click(APP.clearFilters);
@@ -87,7 +84,7 @@ APP.populateSortingOptions = function(){
 
 	//Populate dropdown with sorting options
 	APP.sortingOptions.forEach(function(sortObj){
-		var option = '<option value="'+ sortObj.funcMap + '">' + sortObj.name + '</option>';
+		var option = '<option value="'+ sortObj.funcIndex + '">' + sortObj.name + '</option>';
 		$('#sortBy').append(option);
 	})
 }
@@ -177,7 +174,7 @@ APP.searchByAbvRange = function(){
 	var range = $("#abvStart").val() + "," + $("#abvEnd").val();
 
 	$.blockUI();
-	
+
 	//Search for all beers using the search term
 	APP.requestData(APP.beersUrl,APP.updateModel,"&abv=" + range);
 }
@@ -196,13 +193,13 @@ APP.searchByIbuRange = function(){
 	var range = $("#ibuStart").val() + "," + $("#ibuEnd").val();
 
 	$.blockUI();
-	
+
 	//Search for all beers using the search term
 	APP.requestData(APP.beersUrl,APP.updateModel,"&ibu=" + range);
 }
 
 APP.sortResults = function(){
-	
+
 	$.blockUI();
 
 	//Get the sort func, recall display results
@@ -217,7 +214,7 @@ APP.sortResults = function(){
 APP.requestData = function(url, callback, params){
 	$.ajax({
 		url: url,
-		data: APP.key + (params || ""), 
+		data: APP.key + (params || ""),
 		type: "GET",
 		dataType: "JSON",
 		success: callback
@@ -229,7 +226,7 @@ APP.requestData = function(url, callback, params){
 * Desc: Updates the local model dataset, and calls for display
 		results
 ****************************************************************/
-APP.updateModel = function(beersData){	
+APP.updateModel = function(beersData){
 	APP.model = beersData;
 	APP.model.data = beersData.data;
 
@@ -273,13 +270,13 @@ APP.updateGlasses = function(glasses){
 ****************************************************************/
 APP.createBeerCard = function(item){
 
-	//Grab the template and dynamically create entries based on the template format 
+	//Grab the template and dynamically create entries based on the template format
 	var template = document.querySelector('#beerInfoCard');
 	template.content.querySelector('div#beerName').textContent = item.name;
 	template.content.querySelector('div#beerStyle').textContent = item.style;
 	template.content.querySelector('div#stats').textContent = item.stats;
 
-	//deep copy of clone, add it to the results area. 
+	//deep copy of clone, add it to the results area.
 	var clone = document.importNode(template.content, true);
 	$("#resultsContainer").append(clone);
 }
@@ -288,7 +285,7 @@ APP.createBeerCard = function(item){
 * Function: displayResults
 * Desc: Handles the result from the API call. Updates the resulting
 		count, and for each result, calls the createCard function
-		to dynamically insert into the result container. 
+		to dynamically insert into the result container.
 ****************************************************************/
 APP.displayResults = function(dataIn,sortFunc){
 
@@ -305,7 +302,7 @@ APP.displayResults = function(dataIn,sortFunc){
 		return;
 	}
 
-	//Parse each data obj, create a card, and drop into result container. 
+	//Parse each data obj, create a card, and drop into result container.
 	data.sort(sortFunc).forEach(function(obj){
 		var beerObj = {};
 		beerObj.name = obj.nameDisplay;
@@ -345,22 +342,5 @@ APP.sortByIbu = function(a,b){
 		get the functionality working
 ****************************************************************/
 APP.determineSortingFunc = function(){
-
-	var sortFunc;
-	switch($("#sortBy").val()){
-		case "0":
-			sortFunc = APP.sortByNameAsc;
-			break;
-		case "1":
-			sortFunc = APP.sortByNameDesc;
-			break;
-		case "2":
-			sortFunc = APP.sortByAbv;
-			break;
-		case "3":
-			sortFunc = APP.sortByIbu;
-			break;
-	}	
-
-	return sortFunc;
+	return APP.funcMap[$("#sortBy").val()];
 }
